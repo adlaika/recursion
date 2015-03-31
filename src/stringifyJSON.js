@@ -38,11 +38,17 @@ var stringifyJSON = function (obj) {
     return result += ']';
   }
 
-  //case for other objects
-  // if (typeof obj === 'object') {
-  //   for (var key in obj) {
-  //     return "{" + stringifyJSON(key[obj]) + "}";
-  //   }
-  // }
+  //case for key/value maps
+  else if (typeof obj === 'object') {
+    result += '{';
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        result += ',"' + key + '":' + stringifyJSON(obj[key]);
+      }
+    }
+    result = result.replace(/{[,]/, "{");
+    return result += '}';
+  }
+
   return result;
 };
