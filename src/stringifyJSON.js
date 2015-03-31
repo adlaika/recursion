@@ -42,7 +42,7 @@ var stringifyJSON = function (obj) {
   else if (typeof obj === 'object') {
     result += '{';
     for (var key in obj) {
-      if (obj.hasOwnProperty(key)) {
+      if (obj.hasOwnProperty(key) && obj[key] !== undefined && !(obj[key] instanceof Function)) {
         result += ',"' + key + '":' + stringifyJSON(obj[key]);
       }
     }
