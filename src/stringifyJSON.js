@@ -6,31 +6,43 @@
 var stringifyJSON = function (obj) {
   var result = '';
 
+  //cases for null, undefined, and functions
   if (obj === null) {
-    result = 'null';
-  } else if (obj.toString() === [].toString()) {
-    result = '[]';
-  } else if (typeof obj !== 'object') {
-    if (typeof obj === 'string') {
-      result = '"' + obj + '"';
-    } else if (typeof obj === 'number' || typeof obj === 'boolean') {
-      result = obj.toString();
-    }
+    return result += 'null';
+  } else if (obj === undefined || obj instanceof Function) {
+    return result += '';
   }
 
-  // for (var key in obj) {
-  //   if (obj[key] === undefined || obj[key] instanceof Function) {
-  //     result = result;
-  //   } else
-  //   if (typeof obj[key] === 'boolean' || typeof obj[key] === 'number' || typeof obj[key] === 'string') {
-  //     console.log('boop');
-  //     result += key.toString() + obj[key].toString();
-  //   } else if (obj[key] === null) {
-  //     result += key.toString() + 'null';
-  //   } else {
-  //     result += stringifyJSON(obj[key]);
+  //cases for primitives
+  var primToString = function (elem) {
+    if (typeof elem === 'string') {
+      return result += '"' + elem + '"';
+    } else if (typeof elem === 'number' || typeof elem === 'boolean') {
+      return result += elem.toString();
+    }
+  };
+  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') {
+    console.log('calling primToString on ' + obj);
+    return result += primToString(obj);
+  }
+
+  //case for arrays
+  if (obj instanceof Array) {
+    result += '[';
+    for (var i = 0; i <= obj.length; i++) {
+      result += stringifyJSON(obj[i]);
+      if (i + 1 < obj.length) {
+        result += ',';
+      }
+    }
+    return result += ']';
+  }
+
+  //case for other objects
+  // if (typeof obj === 'object') {
+  //   for (var key in obj) {
+  //     return "{" + stringifyJSON(key[obj]) + "}";
   //   }
   // }
-  console.log('result: ' + result);
   return result;
 };
