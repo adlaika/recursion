@@ -21,5 +21,3 @@ var getElementsByClassName = function (className) {
   domWalk(document.body);
   return elemsWithClass;
 };
-
-console.log('results: ' + getElementsByClassName('targetClassName'));
